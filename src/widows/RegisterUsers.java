@@ -27,6 +27,7 @@ public class RegisterUsers extends javax.swing.JFrame {
      */
     public RegisterUsers() {
         initComponents();
+        user = Login.user;
         setSize(630, 350);
         setResizable(false);
         setTitle("Users Register - Session as " + user);

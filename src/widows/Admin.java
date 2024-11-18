@@ -89,7 +89,6 @@ public class Admin extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
         jLabel_Wallpaper = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -110,6 +109,11 @@ public class Admin extends javax.swing.JFrame {
         getContentPane().add(jButton_RegisterUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 70, 120, 100));
 
         jButton_ManageUsers.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/informationuser.png"))); // NOI18N
+        jButton_ManageUsers.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_ManageUsersActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton_ManageUsers, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 70, 120, 100));
 
         jButton_Creativity.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/creatividad.png"))); // NOI18N
@@ -153,10 +157,6 @@ public class Admin extends javax.swing.JFrame {
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel6.setText("About");
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(503, 340, 120, -1));
-
-        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel7.setText("Created by Andres@");
-        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 370, -1, -1));
         getContentPane().add(jLabel_Wallpaper, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 650, 430));
 
         pack();
@@ -166,6 +166,11 @@ public class Admin extends javax.swing.JFrame {
         RegisterUsers registerUsers = new RegisterUsers();
         registerUsers.setVisible(true);
     }//GEN-LAST:event_jButton_RegisterUserActionPerformed
+
+    private void jButton_ManageUsersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ManageUsersActionPerformed
+        ManageUsers manageUsers = new ManageUsers();
+        manageUsers.setVisible(true);
+    }//GEN-LAST:event_jButton_ManageUsersActionPerformed
 
     /**
      * @param args the command line arguments
@@ -215,7 +220,6 @@ public class Admin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel_Username;
     private javax.swing.JLabel jLabel_Wallpaper;
     // End of variables declaration//GEN-END:variables
