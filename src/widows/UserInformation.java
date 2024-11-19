@@ -212,6 +212,11 @@ public class UserInformation extends javax.swing.JFrame {
         jButton_restorePassword.setForeground(new java.awt.Color(255, 255, 255));
         jButton_restorePassword.setText("Restore Password");
         jButton_restorePassword.setBorder(null);
+        jButton_restorePassword.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_restorePasswordActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton_restorePassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 300, 210, 35));
         getContentPane().add(jLabel_Wallpaper, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 630, 430));
 
@@ -316,6 +321,11 @@ public class UserInformation extends javax.swing.JFrame {
         } catch (Exception e) {
         }
     }//GEN-LAST:event_jButton_updateActionPerformed
+
+    private void jButton_restorePasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_restorePasswordActionPerformed
+        RestorePassword restorePassword = new RestorePassword();
+        restorePassword.setVisible(true);
+    }//GEN-LAST:event_jButton_restorePasswordActionPerformed
 
     /**
      * @param args the command line arguments

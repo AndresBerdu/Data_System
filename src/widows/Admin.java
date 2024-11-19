@@ -120,6 +120,11 @@ public class Admin extends javax.swing.JFrame {
         getContentPane().add(jButton_Creativity, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 70, 120, 100));
 
         jButton_Capturist.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/capturista.png"))); // NOI18N
+        jButton_Capturist.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_CapturistActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton_Capturist, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 240, 120, 100));
 
         jButton_Technical.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/tecnico.png"))); // NOI18N
@@ -171,6 +176,11 @@ public class Admin extends javax.swing.JFrame {
         ManageUsers manageUsers = new ManageUsers();
         manageUsers.setVisible(true);
     }//GEN-LAST:event_jButton_ManageUsersActionPerformed
+
+    private void jButton_CapturistActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_CapturistActionPerformed
+        Capturist capturist = new Capturist();
+        capturist.setVisible(true);
+    }//GEN-LAST:event_jButton_CapturistActionPerformed
 
     /**
      * @param args the command line arguments

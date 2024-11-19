@@ -4,11 +4,11 @@
  */
 package widows;
 
+import java.sql.*;
 import class_systems.Conexion;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.sql.*;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -18,23 +18,22 @@ import javax.swing.WindowConstants;
  *
  * @author andre
  */
-public class RegisterUsers extends javax.swing.JFrame {
+public class RegisterCustomers extends javax.swing.JFrame {
 
     String user;
 
     /**
-     * Creates new form RegisterUsers
+     * Creates new form RegisterCustomers
      */
-    public RegisterUsers() {
+    public RegisterCustomers() {
         initComponents();
         user = Login.user;
-        setSize(630, 350);
+
+        setSize(530, 350);
         setResizable(false);
-        setTitle("Register users - Session as " + user);
+        setTitle("Register new sutomer - Session as " + user);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-
-        user = Login.user;
 
         ImageIcon wallpaper = new ImageIcon("src/images/wallpaperPrincipal.jpg");
         Icon icon = new ImageIcon(wallpaper.getImage().getScaledInstance(
@@ -67,24 +66,20 @@ public class RegisterUsers extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
         txt_name = new javax.swing.JTextField();
         txt_email = new javax.swing.JTextField();
         txt_phone = new javax.swing.JTextField();
-        txt_username = new javax.swing.JTextField();
-        txt_password = new javax.swing.JPasswordField();
-        cmb_levels = new javax.swing.JComboBox<>();
+        txt_address = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jLabel_Wallpaper = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setIconImage(getIconImage());
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Register User");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 10, -1, -1));
+        jLabel1.setText("Register Customer");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 10, -1, -1));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
@@ -103,18 +98,14 @@ public class RegisterUsers extends javax.swing.JFrame {
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setText("Permission as:");
+        jLabel5.setText("Address:");
         getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 230, -1, -1));
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("Username:");
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 50, -1, -1));
-
-        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel7.setText("Password:");
-        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 110, -1, -1));
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel6.setText("Register Customer");
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 210, 120, -1));
 
         txt_name.setBackground(new java.awt.Color(153, 153, 255));
         txt_name.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
@@ -137,22 +128,12 @@ public class RegisterUsers extends javax.swing.JFrame {
         txt_phone.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         getContentPane().add(txt_phone, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, 210, -1));
 
-        txt_username.setBackground(new java.awt.Color(153, 153, 255));
-        txt_username.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
-        txt_username.setForeground(new java.awt.Color(255, 255, 255));
-        txt_username.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        txt_username.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        getContentPane().add(txt_username, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 70, 210, -1));
-
-        txt_password.setBackground(new java.awt.Color(153, 153, 255));
-        txt_password.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
-        txt_password.setForeground(new java.awt.Color(255, 255, 255));
-        txt_password.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        txt_password.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        getContentPane().add(txt_password, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 130, 210, -1));
-
-        cmb_levels.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "Capturist", "Technical" }));
-        getContentPane().add(cmb_levels, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 250, 210, -1));
+        txt_address.setBackground(new java.awt.Color(153, 153, 255));
+        txt_address.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
+        txt_address.setForeground(new java.awt.Color(255, 255, 255));
+        txt_address.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        txt_address.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        getContentPane().add(txt_address, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 250, 210, -1));
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/add.png"))); // NOI18N
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -160,113 +141,75 @@ public class RegisterUsers extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 190, 120, 100));
-        getContentPane().add(jLabel_Wallpaper, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 630, 350));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 100, 120, 100));
+        getContentPane().add(jLabel_Wallpaper, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 530, 350));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        int permissions_cmb;
         int validation = 0;
         String name;
         String email;
         String phone;
-        String username;
-        String password;
-        String permissions_string;
+        String address;
 
-        email = txt_email.getText().trim();
-        username = txt_username.getText().trim();
-        password = txt_password.getText().trim();
         name = txt_name.getText().trim();
+        email = txt_email.getText().trim();
         phone = txt_phone.getText().trim();
-        permissions_cmb = cmb_levels.getSelectedIndex() + 1;
-
-        if (email.equals("")) {
-            txt_email.setBackground(Color.RED);
-            validation++;
-        }
-
-        if (username.equals("")) {
-            txt_username.setBackground(Color.RED);
-            validation++;
-        }
+        address = txt_address.getText().trim();
 
         if (name.equals("")) {
-            txt_name.setBackground(Color.RED);
+            txt_name.setBackground(Color.red);
+            validation++;
+        }
+
+        if (email.equals("")) {
+            txt_email.setBackground(Color.red);
             validation++;
         }
 
         if (phone.equals("")) {
-            txt_phone.setBackground(Color.RED);
+            txt_phone.setBackground(Color.red);
             validation++;
         }
 
-        if (permissions_cmb == 1) {
-            permissions_string = "Admin";
-        } else if (permissions_cmb == 2) {
-            permissions_string = "Capturist";
-        } else {
-            permissions_string = "Technical";
+        if (address.equals("")) {
+            txt_address.setBackground(Color.red);
+            validation++;
         }
 
-        try {
-            Connection cn = Conexion.connect();
-            PreparedStatement pst = cn.prepareStatement(
-                    "SELECT username FROM users WHERE username = '" + username + "'"
-            );
-            ResultSet rs = pst.executeQuery();
+        if (validation == 0) {
+            try {
+                Connection cn = Conexion.connect();
+                PreparedStatement pst = cn.prepareStatement(
+                        "INSERT INTO customers VALUES (?, ?, ?, ?, ?, ?)"
+                );
+                pst.setInt(1, 0);
+                pst.setString(2, name);
+                pst.setString(3, email);
+                pst.setString(4, phone);
+                pst.setString(5, address);
+                pst.setString(6, user);
 
-            if (rs.next()) {
-                txt_username.setBackground(Color.red);
-                JOptionPane.showMessageDialog(null, "Username is not available.");
+                pst.executeUpdate();
                 cn.close();
-            } else {
-                cn.close();
 
-                if (validation == 0) {
-                    try {
-                        Connection cn2 = Conexion.connect();
-                        PreparedStatement pst2 = cn2.prepareStatement(
-                                "INSERT INTO users VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
-                        );
+                Clear();
 
-                        pst2.setInt(1, 0);
-                        pst2.setString(2, name);
-                        pst2.setString(3, email);
-                        pst2.setString(4, phone);
-                        pst2.setString(5, username);
-                        pst2.setString(6, password);
-                        pst2.setString(7, permissions_string);
-                        pst2.setString(8, "On");
-                        pst2.setString(9, user);
+                txt_name.setBackground(Color.green);
+                txt_email.setBackground(Color.green);
+                txt_phone.setBackground(Color.green);
+                txt_address.setBackground(Color.green);
 
-                        pst2.executeUpdate();
-                        cn2.close();
-
-                        Clear();
-
-                        txt_email.setBackground(Color.green);
-                        txt_username.setBackground(Color.green);
-                        txt_password.setBackground(Color.green);
-                        txt_name.setBackground(Color.green);
-                        txt_phone.setBackground(Color.green);
-
-                        JOptionPane.showMessageDialog(null, "Register Successful.");
-                        this.dispose();
-                    } catch (SQLException e) {
-                        System.out.println("Error registering user." + e);
-                        JOptionPane.showMessageDialog(null, "Error register, cotact with admin.");
-                    }
-
-                } else {
-                    JOptionPane.showMessageDialog(null, "You must fill fields.");
-                }
+                JOptionPane.showMessageDialog(null, "Register Successful.");
+                this.dispose();
+            } catch (SQLException e) {
+                System.err.println("Error registering customer " + e);
+                JOptionPane.showInternalMessageDialog(null, "Error registering customer, contact with admin.");
             }
-        } catch (SQLException e) {
-            System.err.println("error validating username: " + e);
-            JOptionPane.showMessageDialog(null, "error validating username, contact with admin.");
+        } else {
+            JOptionPane.showInternalMessageDialog(null, "you must fill out all the fields.");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -287,26 +230,25 @@ public class RegisterUsers extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(RegisterUsers.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RegisterCustomers.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(RegisterUsers.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RegisterCustomers.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(RegisterUsers.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RegisterCustomers.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(RegisterUsers.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RegisterCustomers.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new RegisterUsers().setVisible(true);
+                new RegisterCustomers().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> cmb_levels;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -314,21 +256,18 @@ public class RegisterUsers extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel_Wallpaper;
+    private javax.swing.JTextField txt_address;
     private javax.swing.JTextField txt_email;
     private javax.swing.JTextField txt_name;
-    private javax.swing.JPasswordField txt_password;
     private javax.swing.JTextField txt_phone;
-    private javax.swing.JTextField txt_username;
     // End of variables declaration//GEN-END:variables
 
     public void Clear() {
-        txt_email.setText("");
         txt_name.setText("");
-        txt_password.setText("");
+        txt_email.setText("");
         txt_phone.setText("");
-        txt_username.setText("");
-        cmb_levels.setSelectedIndex(0);
+        txt_address.setText("");
     }
+
 }
