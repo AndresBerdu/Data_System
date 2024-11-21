@@ -81,6 +81,7 @@ public class ManageCustomers extends javax.swing.JFrame {
         }
         
         jTable_customers.addMouseListener(new MouseAdapter() {
+            
             @Override
             public void mouseClicked(MouseEvent e) {
                 int row_point = jTable_customers.rowAtPoint(e.getPoint());
@@ -88,7 +89,8 @@ public class ManageCustomers extends javax.swing.JFrame {
                 
                 if (row_point > -1) {
                     idCliente_update = (int)(model.getValueAt(row_point, column_point));
-                    
+                    CustomerInformation customerInformation = new CustomerInformation();
+                    customerInformation.setVisible(true);
                 }
             }
         });

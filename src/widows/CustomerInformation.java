@@ -17,10 +17,15 @@ import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Paragraph;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
+import static widows.ManageCustomers.idCliente_update;
 
 /**
  *
@@ -28,7 +33,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class CustomerInformation extends javax.swing.JFrame {
 
-    DefaultTableModel defaultTableModel = new DefaultTableModel();
+    DefaultTableModel model = new DefaultTableModel();
 
     int idCliente_Update = 0;
     public static int id_equipment = 0;
@@ -55,6 +60,76 @@ public class CustomerInformation extends javax.swing.JFrame {
         );
         jLabel_Wallpaper.setIcon(icon);
         this.repaint();
+        
+        try {
+            Connection cn = Conexion.connect();
+            PreparedStatement pst = cn.prepareStatement(
+                    "SELECT * FROM customers WHERE id_customer = '" + idCliente_Update + "'" 
+            );
+            ResultSet rs = pst.executeQuery();
+            
+            if(rs.next()){
+                setTitle("Customer Informatio " + rs.getString("customer_name") + " - Session as " + user);
+                jLabel_title.setText("Customer Information " + rs.getString("customer_name"));
+                
+                txt_name.setText(rs.getString("customer_name"));
+                txt_email.setText(rs.getString("customer_email"));
+                txt_phone.setText(rs.getString("customer_phone"));
+                txt_address.setText(rs.getString("customer_address"));
+                txt_lastModify.setText(rs.getString("last_modify"));
+            }
+            
+            cn.close();
+        } catch (SQLException e) {
+            System.err.println("Error loading user " + e);
+            JOptionPane.showInternalMessageDialog(null, "Error loading user, contact admin.");
+        }
+        
+        try {
+            Connection cn = Conexion.connect();
+            PreparedStatement pst = cn.prepareStatement(
+                    "SELECT id_equipment, equipment_type, brand, status FROM equipments "
+                            + "WHERE id_customer = '" + idCliente_Update + "'"
+            );
+            ResultSet rs = pst.executeQuery();
+            
+            jTable_equipment = new JTable(model);
+            jScrollPane_equipment.setViewportView(jTable_equipment);
+            
+            model.addColumn("ID Equipment");
+            model.addColumn("Type Equipment");
+            model.addColumn("Brand Equipment");
+            model.addColumn("Status Equipment");
+            
+            while (rs.next()) {                
+                Object[] row = new Object[4];
+                
+                for (int i = 0; i < 4; i++) {
+                    row[i] = rs.getObject(i + 1);
+                }
+                model.addRow(row);
+                
+            }
+            cn.close();
+            
+        } catch (SQLException e) {
+            System.err.println("Error when filling the equipment table." + e);
+        }
+        
+        jTable_equipment.addMouseListener(new MouseAdapter() {
+            
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int row_point = jTable_equipment.rowAtPoint(e.getPoint());
+                int column_point = 0;
+                
+                if (row_point > -1) {
+                    id_equipment = (int)(model.getValueAt(row_point, column_point));
+                    CustomerInformation customerInformation = new CustomerInformation();
+                    customerInformation.setVisible(true);
+                }
+            }
+        });
     }
 
     @Override
@@ -73,7 +148,7 @@ public class CustomerInformation extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane_equipment = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTable_equipment = new javax.swing.JTable();
         jLabel_title = new javax.swing.JLabel();
         jLabel_name = new javax.swing.JLabel();
         jLabel_email = new javax.swing.JLabel();
@@ -91,9 +166,10 @@ public class CustomerInformation extends javax.swing.JFrame {
         jLabel_Wallpaper = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setIconImage(getIconImage());
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jTable_equipment.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -104,7 +180,7 @@ public class CustomerInformation extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane_equipment.setViewportView(jTable1);
+        jScrollPane_equipment.setViewportView(jTable_equipment);
 
         getContentPane().add(jScrollPane_equipment, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 70, 380, 180));
 
@@ -206,7 +282,8 @@ public class CustomerInformation extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton_RegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_RegisterActionPerformed
-
+        RegisterEquipment registerEquipment = new RegisterEquipment();
+        registerEquipment.setVisible(true);
     }//GEN-LAST:event_jButton_RegisterActionPerformed
 
     private void jButton_UpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_UpdateActionPerformed
@@ -260,7 +337,7 @@ public class CustomerInformation extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel_phone;
     private javax.swing.JLabel jLabel_title;
     private javax.swing.JScrollPane jScrollPane_equipment;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTable_equipment;
     private javax.swing.JTextField txt_address;
     private javax.swing.JTextField txt_email;
     private javax.swing.JTextField txt_lastModify;
