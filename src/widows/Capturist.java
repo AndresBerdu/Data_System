@@ -100,6 +100,7 @@ public class Capturist extends javax.swing.JFrame {
         jLabel_Wallpaper = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setIconImage(getIconImage());
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1_username.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N

@@ -6,11 +6,13 @@ package widows;
 
 import java.sql.*;
 import class_systems.Conexion;
+import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.util.Calendar;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
 /**
@@ -59,7 +61,7 @@ public class RegisterEquipment extends javax.swing.JFrame {
         setTitle("Registere new equipment as " + nameCustomer);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        
+
         txt_customerName.setText(nameCustomer);
     }
 
@@ -182,7 +184,82 @@ public class RegisterEquipment extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton_RegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_RegisterActionPerformed
+        int validation = 0;
+        String type_equipment;
+        String brand;
+        String model;
+        String number_serie;
+        String day_admission;
+        String month_admission;
+        String age_admission;
+        String status;
+        String observations;
 
+        type_equipment = cmb_typeEquipment.getSelectedItem().toString();
+        brand = cmb_brands.getSelectedItem().toString();
+        model = txt_model.getText().trim();
+        number_serie = txt_numberSerie.getText().trim();
+        observations = jTextPane_Observations.getText();
+        status = "New Admission";
+
+        Calendar calendar = Calendar.getInstance();
+
+        day_admission = Integer.toString(calendar.get(Calendar.DATE));
+        month_admission = Integer.toString(calendar.get(Calendar.MONTH));
+        age_admission = Integer.toString(calendar.get(Calendar.YEAR));
+
+        if (model.equals("")) {
+            txt_model.setBackground(Color.red);
+            validation++;
+        }
+
+        if (number_serie.equals("")) {
+            txt_numberSerie.setBackground(Color.red);
+            validation++;
+        }
+
+        if (observations.equals("")) {
+            jTextPane_Observations.setText("No comments");
+        }
+        
+        if (validation == 0) {
+            try {
+                Connection cn = Conexion.connect();
+                PreparedStatement pst = cn.prepareStatement(
+                    "INSERT INTO equipments VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+                );
+                
+                pst.setInt(1, 0);
+                pst.setInt(2, idCustomer_update);
+                pst.setString(3, type_equipment);
+                pst.setString(4, brand);
+                pst.setString(5, model);
+                pst.setString(6, number_serie);
+                pst.setString(7, day_admission);
+                pst.setString(8, month_admission);
+                pst.setString(9, age_admission);
+                pst.setString(10, observations);
+                pst.setString(11, status);
+                pst.setString(12, user);
+                pst.setString(13, "");
+                pst.setString(14, "");
+                
+                pst.executeUpdate();
+                cn.close();
+                
+                txt_customerName.setBackground(Color.green);
+                txt_model.setBackground(Color.green);
+                txt_numberSerie.setBackground(Color.green);
+                
+                JOptionPane.showMessageDialog(null, "Register Successful");
+                this.dispose();
+            } catch (SQLException e) {
+                System.err.println("Error registering the equipment " + e);
+                JOptionPane.showMessageDialog(null, "Error registering the equipment, contact with adim.");
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "You must fill in all fields.");
+        }
     }//GEN-LAST:event_jButton_RegisterActionPerformed
 
     /**
