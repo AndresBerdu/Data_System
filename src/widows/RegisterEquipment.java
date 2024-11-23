@@ -160,7 +160,7 @@ public class RegisterEquipment extends javax.swing.JFrame {
         cmb_typeEquipment.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Laptop", "Desktop", "Print", "Multifunction" }));
         getContentPane().add(cmb_typeEquipment, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 140, 210, -1));
 
-        cmb_brands.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Acer", "AlienWare", "Apple", "Asus", "Brother", "Dell", "HP", "Lenovo" }));
+        cmb_brands.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Acer", "Alienware", "Apple", "Asus", "Brother", "Dell", "HP", "Lenovo", "Samsung", "Toshiba", "Xerox" }));
         getContentPane().add(cmb_brands, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 200, 210, -1));
 
         jScrollPane1.setViewportView(jTextPane_Observations);
