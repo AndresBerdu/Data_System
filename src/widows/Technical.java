@@ -4,19 +4,72 @@
  */
 package widows;
 
+import java.sql.*;
+import class_systems.Conexion;
+import java.awt.Image;
+import java.awt.Toolkit;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.WindowConstants;
+
 /**
  *
  * @author andre
  */
 public class Technical extends javax.swing.JFrame {
 
+    String user;
+    String user_name;
+    int session_user;
+
     /**
-     * Creates new form Technical
+     * Creates new form Capturist
      */
     public Technical() {
         initComponents();
-        setTitle("Technical");
+        user = Login.user;
+        session_user = Admin.session_user;
+
+        setSize(550, 300);
+        setResizable(false);
+        setTitle("Technical - Session as " + user);
         setLocationRelativeTo(null);
+
+        if (session_user == 1) {
+            setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        } else {
+            setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        }
+
+        ImageIcon wallpaper = new ImageIcon("src/images/wallpaperPrincipal.jpg");
+        Icon icon = new ImageIcon(wallpaper.getImage().getScaledInstance(
+                jLabel_Wallpaper.getWidth(),
+                jLabel_Wallpaper.getHeight(),
+                Image.SCALE_DEFAULT)
+        );
+        jLabel_Wallpaper.setIcon(icon);
+        this.repaint();
+
+        try {
+            Connection cn = Conexion.connect();
+            PreparedStatement pst = cn.prepareStatement(
+                    "SELECT user_name FROM users WHERE username = '" + user + "'"
+            );
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                user_name = rs.getString("user_name");
+                jLabel1_username.setText("Welcome " + user_name);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error in querying the name of the technical. " + e);
+        }
+    }
+
+    @Override
+    public Image getIconImage() {
+        Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("images/icon.png"));
+        return retValue;
     }
 
     /**
@@ -28,21 +81,80 @@ public class Technical extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        jLabel1_username = new javax.swing.JLabel();
+        jButton_MangeEquipments = new javax.swing.JButton();
+        jButton_StatusGraphic = new javax.swing.JButton();
+        jButton_BrandGraphic = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel_Wallpaper = new javax.swing.JLabel();
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setIconImage(getIconImage());
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel1_username.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
+        jLabel1_username.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1_username.setText("jLabel1");
+        getContentPane().add(jLabel1_username, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
+
+        jButton_MangeEquipments.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/apoyo-tecnico.png"))); // NOI18N
+        jButton_MangeEquipments.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_MangeEquipmentsActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton_MangeEquipments, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 80, 120, 100));
+
+        jButton_StatusGraphic.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/grafica.png"))); // NOI18N
+        jButton_StatusGraphic.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_StatusGraphicActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton_StatusGraphic, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 80, 120, 100));
+
+        jButton_BrandGraphic.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/grafica.png"))); // NOI18N
+        jButton_BrandGraphic.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_BrandGraphicActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton_BrandGraphic, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 80, 120, 100));
+
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setText("Manage Equipment");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 180, 120, -1));
+
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setText("Status Graphic");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 180, 120, -1));
+
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel5.setText("Brands Graphics");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 180, 120, -1));
+        getContentPane().add(jLabel_Wallpaper, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 550, 300));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton_MangeEquipmentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_MangeEquipmentsActionPerformed
+        ManageEquipments manageEquipments = new ManageEquipments();
+        manageEquipments.setVisible(true);
+    }//GEN-LAST:event_jButton_MangeEquipmentsActionPerformed
+
+    private void jButton_StatusGraphicActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_StatusGraphicActionPerformed
+        StatusGraphics statusGraphics = new StatusGraphics();
+        statusGraphics.setVisible(true);
+    }//GEN-LAST:event_jButton_StatusGraphicActionPerformed
+
+    private void jButton_BrandGraphicActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_BrandGraphicActionPerformed
+
+    }//GEN-LAST:event_jButton_BrandGraphicActionPerformed
 
     /**
      * @param args the command line arguments
@@ -70,6 +182,7 @@ public class Technical extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(Technical.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -80,5 +193,13 @@ public class Technical extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton_BrandGraphic;
+    private javax.swing.JButton jButton_MangeEquipments;
+    private javax.swing.JButton jButton_StatusGraphic;
+    private javax.swing.JLabel jLabel1_username;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel_Wallpaper;
     // End of variables declaration//GEN-END:variables
 }

@@ -370,12 +370,17 @@ public class CustomerInformation extends javax.swing.JFrame {
             String path = System.getProperty("user.home");
             PdfWriter.getInstance(document, new FileOutputStream(path + "/Desktop/" + txt_name.getText().trim() + ".pdf"));
 
+            com.itextpdf.text.Image header = com.itextpdf.text.Image.getInstance("src/images/BannerPDF.jpg");
+            header.scaleToFit(650, 1000);
+            header.setAlignment(Chunk.ALIGN_CENTER);
+
             Paragraph paragraph = new Paragraph();
             paragraph.setAlignment(Paragraph.ALIGN_CENTER);
             paragraph.add("Customer Information. \n \n");
             paragraph.setFont(FontFactory.getFont("Tahoma", 14, Font.BOLD, BaseColor.DARK_GRAY));
 
             document.open();
+            document.add(header);
             document.add(paragraph);
 
             PdfPTable customerTable = new PdfPTable(5);
@@ -441,7 +446,7 @@ public class CustomerInformation extends javax.swing.JFrame {
             } catch (SQLException e) {
                 System.err.println("Error getting customer data " + e);
             }
-            
+
             document.close();
             JOptionPane.showMessageDialog(null, "Report Create Successful");
         } catch (DocumentException | IOException e) {

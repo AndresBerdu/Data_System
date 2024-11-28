@@ -47,48 +47,48 @@ public class ManageCustomers extends javax.swing.JFrame {
         );
         jLabel_Wallpaper.setIcon(icon);
         this.repaint();
-        
+
         try {
             Connection cn = Conexion.connect();
             PreparedStatement pst = cn.prepareStatement(
-                "SELECT id_customer, customer_name, customer_email, customer_phone, customer_address, last_modify "
-                        + "FROM customers"
+                    "SELECT id_customer, customer_name, customer_email, customer_phone, customer_address, last_modify "
+                    + "FROM customers"
             );
             ResultSet rs = pst.executeQuery();
-            
+
             jTable_customers = new JTable(model);
             jScrollPane1.setViewportView(jTable_customers);
-            
+
             model.addColumn(" ");
             model.addColumn("Name");
             model.addColumn("Email");
             model.addColumn("Phone");
             model.addColumn("Address");
             model.addColumn("Modify By");
-            
-            while (rs.next()) {                
+
+            while (rs.next()) {
                 Object[] row = new Object[5];
-                
+
                 for (int i = 0; i < 5; i++) {
                     row[i] = rs.getObject(i + 1);
                 }
                 model.addRow(row);
             }
             cn.close();
-            
+
         } catch (SQLException e) {
             System.err.println("Error filling out the table.");
         }
-        
+
         jTable_customers.addMouseListener(new MouseAdapter() {
-            
+
             @Override
             public void mouseClicked(MouseEvent e) {
                 int row_point = jTable_customers.rowAtPoint(e.getPoint());
                 int column_point = 0;
-                
+
                 if (row_point > -1) {
-                    idCliente_update = (int)(model.getValueAt(row_point, column_point));
+                    idCliente_update = (int) (model.getValueAt(row_point, column_point));
                     CustomerInformation customerInformation = new CustomerInformation();
                     customerInformation.setVisible(true);
                 }

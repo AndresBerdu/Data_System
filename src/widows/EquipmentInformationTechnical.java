@@ -18,35 +18,18 @@ import javax.swing.WindowConstants;
  *
  * @author andre
  */
-public class EquipmentInformation extends javax.swing.JFrame {
+public class EquipmentInformationTechnical extends javax.swing.JFrame {
 
-    int id_CustomerUpdate = 0;
     int id_Equipment = 0;
     String user = "";
-    String CustomerName = "";
 
     /**
      * Creates new form EquipmentInformation
      */
-    public EquipmentInformation() {
+    public EquipmentInformationTechnical() {
         initComponents();
         user = Login.user;
-        id_Equipment = CustomerInformation.id_equipment;
-        id_CustomerUpdate = ManageCustomers.idCliente_update;
-
-        try {
-            Connection cn = Conexion.connect();
-            PreparedStatement pst = cn.prepareStatement(
-                    "SELECT customer_name FROM customers WHERE id_customer = '" + id_CustomerUpdate + "'"
-            );
-            ResultSet rs = pst.executeQuery();
-
-            if (rs.next()) {
-                CustomerName = rs.getString("customer_name");
-            }
-        } catch (SQLException e) {
-            System.err.println("Error querying customer name " + e);
-        }
+        id_Equipment = ManageEquipments.idEquipment_update;
 
         try {
             Connection cn = Conexion.connect();
@@ -81,7 +64,7 @@ public class EquipmentInformation extends javax.swing.JFrame {
             System.err.println("Error querying equipment information " + e);
         }
 
-        setTitle("Equipment of customer " + CustomerName);
+        setTitle("Equipment registerd with ID " + id_Equipment + " - Session as " + user);
         setSize(670, 530);
         setResizable(false);
         setLocationRelativeTo(null);
@@ -95,8 +78,6 @@ public class EquipmentInformation extends javax.swing.JFrame {
         );
         jLabel_Wallpaper.setIcon(icon);
         this.repaint();
-
-        txt_CustomerName.setText(CustomerName);
     }
 
     @Override
@@ -246,11 +227,11 @@ public class EquipmentInformation extends javax.swing.JFrame {
         cmb_status.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "New Admission", "Not Fixed", "In Review", "Fixed", "Delivered", " " }));
         getContentPane().add(cmb_status, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 80, 130, -1));
 
+        jTextPane_Observations.setEditable(false);
         jScrollPane1.setViewportView(jTextPane_Observations);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 130, 330, 120));
 
-        jTextPane_TechnicalCommenst.setEditable(false);
         jScrollPane2.setViewportView(jTextPane_TechnicalCommenst);
 
         getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 280, 330, 120));
@@ -258,7 +239,7 @@ public class EquipmentInformation extends javax.swing.JFrame {
         jButton_Update.setBackground(new java.awt.Color(153, 153, 255));
         jButton_Update.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
         jButton_Update.setForeground(new java.awt.Color(255, 255, 255));
-        jButton_Update.setText("Update Equipment");
+        jButton_Update.setText("Comment and Update");
         jButton_Update.setBorder(null);
         jButton_Update.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -272,69 +253,33 @@ public class EquipmentInformation extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton_UpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_UpdateActionPerformed
-        int validation = 0;
-        String type_equipment;
-        String brand;
-        String model;
-        String number_serie;
         String status;
-        String observations;
+        String technicalComments;
+        String technical;
 
-        type_equipment = cmb_TypeEquipment.getSelectedItem().toString();
-        brand = cmb_Brand.getSelectedItem().toString();
         status = cmb_status.getSelectedItem().toString();
+        technicalComments = jTextPane_TechnicalCommenst.getText();
+        technical = user;
 
-        model = txt_Model.getText().trim();
-        number_serie = txt_NumberSerie.getText().trim();
-        observations = jTextPane_Observations.getText();
-
-        if (model.equals("")) {
-            txt_Model.setBackground(Color.red);
-            validation++;
-        }
-
-        if (number_serie.equals("")) {
-            txt_NumberSerie.setBackground(Color.red);
-            validation++;
-        }
-
-        if (observations.equals("")) {
-            jTextPane_Observations.setText("No comments");
-        }
-        
-        if (validation == 0) {
-            try {
-                Connection cn = Conexion.connect();
-                PreparedStatement pst = cn.prepareStatement(
-                    "UPDATE equipments SET equipment_type = ?, brand = ?, model = ?, number_serie = ?, observations = ?, "
-                            + "status = ?,last_modify = ? WHERE id_equipment = '" + id_Equipment + "'"
-                );
-                pst.setString(1, type_equipment);
-                pst.setString(2, brand);
-                pst.setString(3, model);
-                pst.setString(4, number_serie);
-                pst.setString(5, observations);
-                pst.setString(6, status);
-                pst.setString(7, user);
-                
-                pst.executeUpdate();
-                cn.close();
-                
-                Clear();
-                
-                txt_CustomerName.setBackground(Color.green);
-                txt_Date.setBackground(Color.green);
-                txt_Model.setBackground(Color.green); 
-                txt_NumberSerie.setBackground(Color.green); 
-                txt_LastModify.setText(user);
-                
-                JOptionPane.showMessageDialog(null, "Upadate Successful.");
-            } catch (SQLException e) {
-                System.err.println("Error updating customer " + e);
-                JOptionPane.showMessageDialog(null, "Error updating equipment, contact with admin.");
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "You must fill in all fields.");
+        try {
+            Connection cn = Conexion.connect();
+            PreparedStatement pst = cn.prepareStatement(
+                    "UPDATE equipments SET status = ?, technical_comments = ?, rechnical_revision_of = ? "
+                    + "WHERE id_equipment = '" + id_Equipment + "'"
+            );
+            
+            pst.setString(1, status);
+            pst.setString(2, technicalComments);
+            pst.setString(3, technical);
+            
+            pst.executeUpdate();
+            cn.close();
+            
+            JOptionPane.showMessageDialog(null, "Successful Update");
+            this.dispose();
+        } catch (SQLException e) {
+            System.err.println("Error updating the equipment " + e);
+            JOptionPane.showMessageDialog(null, "Error updating the equipment, contact with admin.");
         }
     }//GEN-LAST:event_jButton_UpdateActionPerformed
 
@@ -355,20 +300,21 @@ public class EquipmentInformation extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(EquipmentInformation.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EquipmentInformationTechnical.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(EquipmentInformation.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EquipmentInformationTechnical.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(EquipmentInformation.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EquipmentInformationTechnical.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(EquipmentInformation.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EquipmentInformationTechnical.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new EquipmentInformation().setVisible(true);
+                new EquipmentInformationTechnical().setVisible(true);
             }
         });
     }
@@ -400,7 +346,7 @@ public class EquipmentInformation extends javax.swing.JFrame {
     private javax.swing.JTextField txt_Model;
     private javax.swing.JTextField txt_NumberSerie;
     // End of variables declaration//GEN-END:variables
-    
+
     public void Clear() {
         txt_CustomerName.setText("");
         txt_Date.setText("");

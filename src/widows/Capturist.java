@@ -17,8 +17,11 @@ import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Paragraph;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
 /**
@@ -65,7 +68,7 @@ public class Capturist extends javax.swing.JFrame {
                     "SELECT user_name FROM users WHERE username = '" + user + "'"
             );
             ResultSet rs = pst.executeQuery();
-            
+
             if (rs.next()) {
                 user_name = rs.getString("user_name");
                 jLabel1_username.setText("Welcome " + user_name);
@@ -125,6 +128,11 @@ public class Capturist extends javax.swing.JFrame {
         getContentPane().add(jButton_ManageCustomer, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 80, 120, 100));
 
         jButton_Print.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/impresora.png"))); // NOI18N
+        jButton_Print.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_PrintActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton_Print, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 80, 120, 100));
 
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
@@ -152,9 +160,64 @@ public class Capturist extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton_RegisterCustomerActionPerformed
 
     private void jButton_ManageCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ManageCustomerActionPerformed
-       ManageCustomers manageCustomers = new ManageCustomers();
-       manageCustomers.setVisible(true);
+        ManageCustomers manageCustomers = new ManageCustomers();
+        manageCustomers.setVisible(true);
     }//GEN-LAST:event_jButton_ManageCustomerActionPerformed
+
+    private void jButton_PrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_PrintActionPerformed
+        Document document = new Document();
+
+        try {
+            String path = System.getProperty("user.home");
+            PdfWriter.getInstance(document, new FileOutputStream(path + "/Desktop/ListCustomers.pdf"));
+
+            com.itextpdf.text.Image header = com.itextpdf.text.Image.getInstance("src/images/BannerPDF.jpg");
+            header.scaleToFit(650, 1000);
+            header.setAlignment(Chunk.ALIGN_CENTER);
+
+            Paragraph paragraph = new Paragraph();
+            paragraph.setAlignment(Paragraph.ALIGN_CENTER);
+            paragraph.add("List Customers. \n\n");
+            paragraph.setFont(FontFactory.getFont("Tahoma", 18, Font.BOLD, BaseColor.DARK_GRAY));
+
+            document.open();
+            document.add(header);
+            document.add(paragraph);
+
+            PdfPTable table = new PdfPTable(5);
+            table.addCell("ID");
+            table.addCell("Name");
+            table.addCell("Email");
+            table.addCell("Customer");
+            table.addCell("Address");
+
+            try {
+                Connection cn = Conexion.connect();
+                PreparedStatement pst = cn.prepareStatement(
+                        "SELECT * FROM customers"
+                );
+                ResultSet rs = pst.executeQuery();
+
+                if (rs.next()) {
+                    do {
+                        table.addCell(rs.getString(1));
+                        table.addCell(rs.getString(2));
+                        table.addCell(rs.getString(3));
+                        table.addCell(rs.getString(4));
+                        table.addCell(rs.getString(5));
+                    } while (rs.next());
+                    document.add(table);
+                }
+            } catch (SQLException e) {
+                System.err.println("Error generating customer list " + e);
+            }
+            document.close();
+            JOptionPane.showMessageDialog(null, "List customer create successful.");
+        } catch (DocumentException | IOException e) {
+            System.err.println("Error generate PDF " + e);
+            JOptionPane.showMessageDialog(null, "Error generating pdf, contact with admin.");
+        }
+    }//GEN-LAST:event_jButton_PrintActionPerformed
 
     /**
      * @param args the command line arguments
