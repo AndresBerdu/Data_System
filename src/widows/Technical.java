@@ -153,7 +153,8 @@ public class Technical extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton_StatusGraphicActionPerformed
 
     private void jButton_BrandGraphicActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_BrandGraphicActionPerformed
-
+        BrandsGraphics brandsGraphics = new BrandsGraphics();
+        brandsGraphics.setVisible(true);
     }//GEN-LAST:event_jButton_BrandGraphicActionPerformed
 
     /**
